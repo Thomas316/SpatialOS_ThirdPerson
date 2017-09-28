@@ -1,0 +1,48 @@
+diff --git a/Engine/Source/Programs/UnrealBuildTool/Linux/LinuxToolChain.cs b/Engine/Source/Programs/UnrealBuildTool/Linux/LinuxToolChain.cs
+index a994f8b5ce..2fc97bdbda 100644
+--- a/Engine/Source/Programs/UnrealBuildTool/Linux/LinuxToolChain.cs
++++ b/Engine/Source/Programs/UnrealBuildTool/Linux/LinuxToolChain.cs
+@@ -304,8 +304,11 @@ namespace UnrealBuildTool
+ 
+ 		private static bool ShouldUseLibcxx(string Architecture)
+ 		{
+-			// set UE4_LINUX_USE_LIBCXX to either 0 or 1. If unset, defaults to 1.
+-			string UseLibcxxEnvVarOverride = Environment.GetEnvironmentVariable("UE4_LINUX_USE_LIBCXX");
++			// Improbable: it's not possible to disable libc++ via the UE4_LINUX_USE_LIBCXX variable, so disable it fully.
++            return false;
++            /*
++            // set UE4_LINUX_USE_LIBCXX to either 0 or 1. If unset, defaults to 1.
++            string UseLibcxxEnvVarOverride = Environment.GetEnvironmentVariable("UE4_LINUX_USE_LIBCXX");
+ 			if (UseLibcxxEnvVarOverride != null && (UseLibcxxEnvVarOverride == "1"))
+ 			{
+ 				return true;
+@@ -313,6 +316,7 @@ namespace UnrealBuildTool
+ 
+ 			// at the moment only x86_64 is supported
+ 			return Architecture.StartsWith("x86_64") || Architecture.StartsWith("aarch64");
++            */
+ 		}
+ 
+ 		static string GetCLArguments_Global(CPPEnvironment CompileEnvironment)
+diff --git a/Engine/Source/Runtime/Core/Private/HAL/MallocBinned.cpp b/Engine/Source/Runtime/Core/Private/HAL/MallocBinned.cpp
+index 9c4235ff92..583251530e 100644
+--- a/Engine/Source/Runtime/Core/Private/HAL/MallocBinned.cpp
++++ b/Engine/Source/Runtime/Core/Private/HAL/MallocBinned.cpp
+@@ -430,7 +430,7 @@ struct FMallocBinned::Private
+ 
+ 		UPTRINT BasePtr;
+ 		FPoolInfo* Pool = FindPoolInfo(Allocator, (UPTRINT)Ptr, BasePtr);
+-#if PLATFORM_IOS || PLATFORM_MAC
++#if PLATFORM_IOS || PLATFORM_MAC || PLATFORM_LINUX
+         if (Pool == NULL)
+         {
+             UE_LOG(LogMemory, Warning, TEXT("Attempting to free a pointer we didn't allocate!"));
+@@ -1061,7 +1061,7 @@ bool FMallocBinned::GetAllocationSize(void *Original, SIZE_T &SizeOut)
+ 	UPTRINT BasePtr;
+ 	FPoolInfo* Pool = Private::FindPoolInfo(*this, (UPTRINT)Original, BasePtr);
+ 
+-#if PLATFORM_IOS || PLATFORM_MAC
++#if PLATFORM_IOS || PLATFORM_MAC || PLATFORM_LINUX
+ 	if (Pool == NULL)
+ 	{
+ 		UE_LOG(LogMemory, Warning, TEXT("Attempting to access memory pool info for a pointer we didn't allocate!"));

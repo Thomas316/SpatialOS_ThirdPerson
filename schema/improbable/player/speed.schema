@@ -1,0 +1,6 @@
+package improbable.player;
+
+component Speed {
+    id = 21006;
+	float speed = 1;
+}

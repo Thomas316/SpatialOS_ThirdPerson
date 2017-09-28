@@ -1,0 +1,6 @@
+package improbable.player;
+
+component Jumping {
+    id = 21007;
+	bool jumping = 1;
+}

@@ -1,0 +1,8 @@
+package improbable.player;
+
+import "improbable/standard_library.schema";
+
+component Rotation {
+    id = 21005;
+	Coordinates rotation = 1;
+}
