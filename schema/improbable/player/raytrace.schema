@@ -1,0 +1,18 @@
+package improbable.player;
+
+import "improbable/standard_library.schema";
+
+type RTraceRequest {
+	Coordinates startloc = 1;
+	Coordinates endloc = 2;
+	EntityId target = 3;
+}
+
+type RTraceResponse {
+	bool hitverified = 1;
+}
+
+component Raytrace {
+    id = 21008;
+	command RTraceResponse traceinfo(RTraceRequest);
+}

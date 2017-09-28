@@ -13,6 +13,7 @@
 #include "improbable/player/rotation.h"
 #include "improbable/player/speed.h"
 #include "improbable/player/jumping.h"
+#include "improbable/player/raytrace.h"
 #include "improbable/spawner/spawner.h"
 #include "improbable/standard_library.h"
 
@@ -86,6 +87,7 @@ UEntityTemplate* ARpgDemoGameMode::CreatePlayerEntityTemplate(FString clientWork
 			.AddComponent<player::Rotation>(player::Rotation::Data{ initialRotation }, ownClientRequirementSet)
 			.AddComponent<player::Speed>(player::Speed::Data{ 0.0f }, ownClientRequirementSet)
 			.AddComponent<player::Jumping>(player::Jumping::Data{ false }, ownClientRequirementSet)
+			.AddComponent<player::Raytrace>(player::Raytrace::Data{}, workerRequirementSet)
             .Build();
 
     return NewObject<UEntityTemplate>(this, UEntityTemplate::StaticClass())->Init(playerTemplate);
